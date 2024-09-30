@@ -1,10 +1,10 @@
-package com.ttcollab.spoterly;
+package com.ttcollab.services;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class SpoterlyApplicationTests {
+class ServicesApplicationTests {
 
 	@Test
 	void contextLoads() {
