@@ -1,13 +1,14 @@
-package com.ttcollab.services;
+package com.ttcollab.spoterly;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+
 @SpringBootApplication
-public class ServicesApplication {
+public class SpoterlyApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(ServicesApplication.class, args);
+		SpringApplication.run(SpoterlyApplication.class, args);
 	}
 
 }

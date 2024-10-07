@@ -1,4 +1,4 @@
 
-include 'core'
-include 'rest'
-include 'services'
+include 'spoterly-core'
+include 'spoterly-rest'
+include 'spoterly-services'

@@ -1,0 +1,25 @@
+import org.springframework.boot.gradle.plugin.SpringBootPlugin
+
+
+plugins {
+	id 'org.springframework.boot' version '3.3.4'
+}
+
+apply plugin: 'io.spring.dependency-management'
+
+
+
+dependencyManagement {
+	imports {
+		mavenBom SpringBootPlugin.BOM_COORDINATES
+	}
+}
+
+dependencies {
+
+	implementation project(':spoterly-core')
+	implementation project(':spoterly-rest')
+
+
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+}
