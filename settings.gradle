@@ -1,1 +1,4 @@
-rootProject.name = 'spoterly'
+
+include 'core'
+include 'rest'
+include 'services'
