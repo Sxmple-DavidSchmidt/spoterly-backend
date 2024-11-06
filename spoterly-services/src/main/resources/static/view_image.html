@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Retrieve Image by UUID</title>
+    <style>
+        #image-display {
+            margin-top: 20px;
+            max-width: 400px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>Retrieve Image by UUID</h1>
+    <div>
+        <label for="uuidInput">Enter Image UUID:</label>
+        <input type="text" id="uuidInput" placeholder="Enter UUID here" required>
+        <button onclick="retrieveImage()">Get Image</button>
+    </div>
+
+    <img id="image-display" alt="Retrieved Image">
+
+    <script>
+        async function retrieveImage() {
+            const uuid = document.getElementById('uuidInput').value.trim();
+
+            if (uuid === '') {
+                alert('Please enter a valid UUID.');
+                return;
+            }
+
+            try {
+                const response = await fetch(`/images/${uuid}`, {
+                    method: 'GET',
+                });
+
+                if (response.ok) {
+                    const blob = await response.blob();
+                    const imageUrl = URL.createObjectURL(blob);
+                    const imageDisplay = document.getElementById('image-display');
+                    imageDisplay.src = imageUrl;
+                    imageDisplay.style.display = 'block';
+                } else {
+                    alert('Failed to retrieve image. Please check the UUID.');
+                }
+            } catch (error) {
+                console.error('Error retrieving image:', error);
+                alert('Error retrieving image. Please check the console for more details.');
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,4 +1,3 @@
-
 include 'spoterly-core'
 include 'spoterly-rest'
 include 'spoterly-services'
