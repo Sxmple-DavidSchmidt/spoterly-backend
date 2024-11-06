@@ -4,7 +4,6 @@ import lombok.Data;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
-import java.util.Set;
 import java.util.UUID;
 
 @Data
@@ -18,6 +17,4 @@ public class PostDto {
     private UserDto author;
 
     private String content;
-
-    private Set<UserDto> likedBy;
 }

@@ -12,6 +12,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@EqualsAndHashCode(exclude = "likedByUsers")
 @Table(name = "posts")
 public class PostEntity {
     @Id

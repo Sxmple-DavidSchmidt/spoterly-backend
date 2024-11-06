@@ -12,9 +12,4 @@ import java.util.UUID;
 
 @Repository
 public interface SpotRepository extends CrudRepository<SpotEntity, UUID> {
-    @Query(
-            "SELECT s FROM SpotEntity s " +
-            "JOIN s.likedByUsers u " +
-            "WHERE u.username = :username")
-    List<SpotEntity> findLikedSpotsByUsername(@Param("username") String username);
 }

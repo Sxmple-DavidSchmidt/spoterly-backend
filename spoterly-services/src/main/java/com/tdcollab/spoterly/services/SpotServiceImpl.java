@@ -1,7 +1,6 @@
 package com.tdcollab.spoterly.services;
 
 import com.tdcollab.spoterly.core.entities.SpotEntity;
-import com.tdcollab.spoterly.core.entities.UserEntity;
 import com.tdcollab.spoterly.repositories.SpotRepository;
 import com.tdcollab.spoterly.core.services.SpotService;
 import com.tdcollab.spoterly.core.exceptions.SpotNotFoundException;
@@ -9,7 +8,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -42,10 +40,5 @@ public class SpotServiceImpl implements SpotService {
         ).collect(
                 Collectors.toList()
         );
-    }
-
-    @Override
-    public Set<UserEntity> findLikingUsers(UUID id) {
-        return findById(id).getLikedByUsers();
     }
 }

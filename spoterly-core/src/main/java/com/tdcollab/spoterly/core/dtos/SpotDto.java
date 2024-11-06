@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Set;
 import java.util.UUID;
 
 @Data
@@ -20,6 +19,4 @@ public class SpotDto {
     private double latitude;
 
     private double longitude;
-
-    private Set<UserDto> likedBy;
 }

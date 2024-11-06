@@ -12,9 +12,4 @@ import java.util.UUID;
 
 @Repository
 public interface PostRepository extends CrudRepository<PostEntity, UUID> {
-    @Query(
-            "SELECT p FROM PostEntity p " +
-            "JOIN p.likedByUsers u " +
-            "WHERE u.username = :username")
-    List<PostEntity> findLikedPostsByUsername(@Param("username") String username);
 }
