@@ -16,6 +16,7 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/spots")
 public class SpotController {
@@ -29,7 +30,7 @@ public class SpotController {
         this.userMapper = userMapper;
     }
 
-    @PostMapping("")
+    @PostMapping
     public ResponseEntity<SpotDto> createSpot(@RequestBody SpotDto spotDto) {
         SpotEntity spotEntity = spotMapper.mapFrom(spotDto);
         SpotEntity savedSpot = spotService.createSpot(spotEntity);
@@ -37,7 +38,7 @@ public class SpotController {
         return new ResponseEntity<>(savedSpotDto, HttpStatus.CREATED);
     }
 
-    @GetMapping("")
+    @GetMapping
     public List<SpotDto> getSpots() {
         List<SpotEntity> spotEntities = spotService.findAll();
         return spotEntities
