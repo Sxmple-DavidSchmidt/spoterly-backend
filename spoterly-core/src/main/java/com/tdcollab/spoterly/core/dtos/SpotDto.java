@@ -10,7 +10,6 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 public class SpotDto {
-    private UUID id;
 
     private String name;
 
@@ -19,4 +18,6 @@ public class SpotDto {
     private double latitude;
 
     private double longitude;
+
+    private String city;
 }

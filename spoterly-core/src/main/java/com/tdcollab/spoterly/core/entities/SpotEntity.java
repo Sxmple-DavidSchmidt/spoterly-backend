@@ -31,6 +31,8 @@ public class SpotEntity {
 
     private double longitude;
 
+    private String city;
+
     @ManyToMany
     @JoinTable(
             name = "user_likes_spot",

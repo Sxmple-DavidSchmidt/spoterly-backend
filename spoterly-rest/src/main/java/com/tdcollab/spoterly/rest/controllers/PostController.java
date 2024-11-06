@@ -40,20 +40,17 @@ public class PostController {
         this.userMapper = userMapper;
     }
 
-    @PostMapping("")
+    @PostMapping
     public ResponseEntity<PostDto> createPost(@RequestBody PostDto postDto) {
-        SpotDto spotDto = postDto.getSpot();
-        if (spotDto == null) throw new SpotNotFoundException("Spot is null");
+        SpotEntity spot = spotService.findById(postDto.getSpot());
+        if (spot == null) throw new SpotNotFoundException("Spot is null");
 
-        UserDto userDto = postDto.getAuthor();
-        if (userDto == null) throw new UserNotFoundException("User is null");
-
-        SpotEntity spotEntity = spotService.findById(spotDto.getId());
-        UserEntity userEntity = userService.findByUsername(userDto.getUsername());
+        UserEntity user = userService.findByUsername(postDto.getAuthor());
+        if (user == null) throw new UserNotFoundException("User is null");
 
         PostEntity postEntity = postMapper.mapFrom(postDto);
-        postEntity.setSpot(spotEntity);
-        postEntity.setAuthor(userEntity);
+        postEntity.setSpot(spot);
+        postEntity.setAuthor(user);
 
         PostEntity savedPost = postService.createPost(postEntity);
         PostDto savedPostDto = postMapper.mapTo(savedPost);

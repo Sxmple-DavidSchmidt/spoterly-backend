@@ -12,9 +12,9 @@ import java.util.UUID;
 public class PostDto {
     private UUID id;
 
-    private SpotDto spot;
+    private UUID spot;
 
-    private UserDto author;
+    private String author;
 
     private String content;
 }
