@@ -12,12 +12,8 @@ import com.tdcollab.spoterly.core.exceptions.SpotAlreadyLikedException;
 import com.tdcollab.spoterly.core.exceptions.UserNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import java.util.UUID;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -41,31 +37,6 @@ public class UserServiceImpl implements UserService {
         Optional<UserEntity> userEntity = userRepository.findByUsername(username);
         if (userEntity.isEmpty()) throw new UserNotFoundException("Could not find User with username: \"" + username + "\"");
         return userEntity.get();
-    }
-
-    @Override
-    public List<UserEntity> findAll() {
-        return StreamSupport.stream(
-                userRepository.findAll().spliterator(),
-                false
-        ).collect(
-                Collectors.toList()
-        );
-    }
-
-    @Override
-    public List<UserEntity> findByAttribute(String username, String surname, String name) {
-        return userRepository.findByAttribute(username, surname, name);
-    }
-
-    @Override
-    public Set<SpotEntity> findLikedSpots(String username) {
-        return findByUsername(username).getLikedSpots();
-    }
-
-    @Override
-    public Set<PostEntity> findLikedPosts(String username) {
-        return findByUsername(username).getLikedPosts();
     }
 
     @Override
