@@ -1,9 +1,21 @@
-version: '3.1'
+version: '3.8'
+
 services:
-  db:
-    image: postgres
-    ports:
-      - '5432:5432'
-    restart: always
+  postgres:
+    image: postgres:17
+    container_name: postgres-container
     environment:
-      POSTGRES_PASSWORD: 'aendermich'
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: aendermich
+      POSTGRES_DB: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  postgres-data:
+    driver: local

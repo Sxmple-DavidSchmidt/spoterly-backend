@@ -75,13 +75,13 @@ public class UserController {
                 .toList();
     }
 
-    @GetMapping(path = "/{username}/likedSpots")
-    public List<SpotDto> getLikedSpotsByUsername(@PathVariable("username") String username) {
-        return userService.findByUsername(username).getLikedSpots()
-                .stream()
-                .map(spotMapper::mapTo)
-                .toList();
-    }
+//    @GetMapping(path = "/{username}/likedSpots")
+//    public List<SpotDto> getLikedSpotsByUsername(@PathVariable("username") String username) {
+//        return userService.findByUsername(username).getLikedSpots()
+//                .stream()
+//                .map(spotMapper::mapTo)
+//                .toList();
+//    }
 
     @ExceptionHandler(UserNotFoundException.class)
     public ResponseEntity<String> handleUserNotFoundException(UserNotFoundException e) {
