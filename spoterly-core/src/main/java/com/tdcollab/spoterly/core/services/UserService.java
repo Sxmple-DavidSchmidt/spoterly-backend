@@ -11,4 +11,5 @@ public interface UserService {
     void unlikePost(String username, UUID postId);
     void likeSpot(String username, UUID spotId);
     void unlikeSpot(String username, UUID spotId);
+    UserEntity authenticate(String username, String password);
 }

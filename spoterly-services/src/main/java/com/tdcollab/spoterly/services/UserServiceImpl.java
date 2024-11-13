@@ -10,6 +10,7 @@ import com.tdcollab.spoterly.core.services.UserService;
 import com.tdcollab.spoterly.core.exceptions.PostAlreadyLikedException;
 import com.tdcollab.spoterly.core.exceptions.SpotAlreadyLikedException;
 import com.tdcollab.spoterly.core.exceptions.UserNotFoundException;
+import org.apache.catalina.User;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -37,6 +38,16 @@ public class UserServiceImpl implements UserService {
         Optional<UserEntity> userEntity = userRepository.findByUsername(username);
         if (userEntity.isEmpty()) throw new UserNotFoundException("Could not find User with username: \"" + username + "\"");
         return userEntity.get();
+    }
+
+    public UserEntity authenticate(String username, String password) {
+        Optional<UserEntity> user = userRepository.findByUsername(username);
+
+        if(user.isPresent() && user.get().getPassword().equals(password)){
+            return user.get();
+        }
+
+        return null;
     }
 
     @Override
