@@ -1,5 +1,6 @@
-package com.tdcollab.spoterly.core.dtos;
+package com.tdcollab.spoterly.core.dtos.user;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -7,10 +8,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserDto {
+public class DeleteUserDto {
+    @JsonProperty("username")
     private String username;
-
-    private String firstname;
-
-    private String lastname;
 }

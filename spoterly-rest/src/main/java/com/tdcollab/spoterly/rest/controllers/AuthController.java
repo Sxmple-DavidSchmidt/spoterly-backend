@@ -1,6 +1,6 @@
 package com.tdcollab.spoterly.rest.controllers;
 
-import com.tdcollab.spoterly.core.dtos.LoginDto;
+import com.tdcollab.spoterly.core.dtos.auth.LoginDto;
 import com.tdcollab.spoterly.core.entities.UserEntity;
 import com.tdcollab.spoterly.core.services.UserService;
 import lombok.AllArgsConstructor;

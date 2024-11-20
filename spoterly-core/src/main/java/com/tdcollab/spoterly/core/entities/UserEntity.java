@@ -23,8 +23,6 @@ public class UserEntity implements Principal {
 
     private String password;
 
-    private String email;
-
     @ManyToMany(mappedBy = "likedByUsers")
     private Set<PostEntity> likedPosts = new HashSet<>();
 
