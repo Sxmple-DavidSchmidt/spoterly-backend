@@ -5,7 +5,6 @@ import com.tdcollab.spoterly.core.entities.ImageEntity;
 import com.tdcollab.spoterly.core.exceptions.ImageNotFoundException;
 import com.tdcollab.spoterly.core.mappers.ImageMapper;
 import com.tdcollab.spoterly.core.services.ImageService;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
