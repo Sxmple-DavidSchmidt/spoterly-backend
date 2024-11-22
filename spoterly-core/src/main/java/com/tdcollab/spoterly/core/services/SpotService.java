@@ -9,4 +9,5 @@ public interface SpotService {
     SpotEntity createSpot(SpotEntity spotEntity);
     SpotEntity findById(UUID id);
     List<SpotEntity> findAll();
+    void deleteSpot(UUID id);
 }

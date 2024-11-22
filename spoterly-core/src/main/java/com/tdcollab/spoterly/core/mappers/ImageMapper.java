@@ -14,19 +14,4 @@ public class ImageMapper {
         imageDto.setFileType(imageEntity.getFileType());
         return imageDto;
     }
-
-    public ImageEntity entityFromImageDto(ImageDto imageDto) {
-        ImageEntity imageEntity = new ImageEntity();
-        imageEntity.setId(imageDto.getId());
-        imageEntity.setImageData(imageDto.getImageData());
-        imageEntity.setFileType(imageEntity.getFileType());
-        return imageEntity;
-    }
-
-    public ImageEntity entityFromCreateImageDto(CreateImageDto createImageDto) {
-        ImageEntity imageEntity = new ImageEntity();
-        imageEntity.setImageData(createImageDto.getImageData());
-        imageEntity.setFileType(createImageDto.getFileType());
-        return imageEntity;
-    }
 }

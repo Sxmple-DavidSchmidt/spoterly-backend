@@ -9,4 +9,5 @@ import java.util.UUID;
 public interface ImageService {
     ImageEntity uploadImage(MultipartFile file) throws IOException;
     ImageEntity findById(UUID id);
+    void deleteImage(UUID id);
 }

@@ -23,6 +23,10 @@ public class SpotEntity {
     @UuidGenerator
     private UUID id;
 
+    @ManyToOne
+    @JoinColumn(name = "author_id")
+    private UserEntity author;
+
     private String name;
 
     private String description;

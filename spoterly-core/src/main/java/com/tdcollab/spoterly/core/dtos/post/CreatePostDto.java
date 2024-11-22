@@ -14,9 +14,6 @@ public class CreatePostDto {
     @JsonProperty("spot_id")
     private UUID spot;
 
-    @JsonProperty("author_id")
-    private String author;
-
     @JsonProperty("content")
     private String content;
 }

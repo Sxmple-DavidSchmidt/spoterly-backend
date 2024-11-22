@@ -1,6 +1,7 @@
 package com.tdcollab.spoterly.core.mappers;
 
 import com.tdcollab.spoterly.core.dtos.post.CreatePostDto;
+import com.tdcollab.spoterly.core.dtos.post.MinimalPostDto;
 import com.tdcollab.spoterly.core.dtos.post.PostDto;
 import com.tdcollab.spoterly.core.dtos.spot.SpotDto;
 import com.tdcollab.spoterly.core.dtos.user.UserDto;
@@ -10,6 +11,8 @@ import com.tdcollab.spoterly.core.entities.UserEntity;
 import com.tdcollab.spoterly.core.services.SpotService;
 import com.tdcollab.spoterly.core.services.UserService;
 import org.springframework.stereotype.Component;
+
+import java.util.UUID;
 
 @Component
 public class PostMapper {
@@ -37,21 +40,22 @@ public class PostMapper {
         return postDto;
     }
 
-    public PostEntity entityFromPostDto(PostDto postDto) {
-        PostEntity postEntity = new PostEntity();
-        postEntity.setId(postDto.getId());
-        postEntity.setAuthor(userService.findByUsername(postDto.getAuthor().getUsername()));
-        postEntity.setSpot(spotService.findById(postDto.getSpot().getId()));
-        postEntity.setContent(postDto.getContent());
-        return postEntity;
+    public MinimalPostDto minimalFromPostEntity(PostEntity postEntity) {
+        MinimalPostDto minimalPostDto = new MinimalPostDto();
+        String author_id = postEntity.getAuthor().getUsername();
+        UUID spot_id = postEntity.getSpot().getId();
+
+        minimalPostDto.setId(postEntity.getId());
+        minimalPostDto.setContent(postEntity.getContent());
+        minimalPostDto.setAuthor_id(author_id);
+        minimalPostDto.setSpot_id(spot_id);
+        return minimalPostDto;
     }
 
     public PostEntity entityFromCreatePostDto(CreatePostDto createPostDto) {
-        UserEntity userEntity = userService.findByUsername(createPostDto.getAuthor());
         SpotEntity spotEntity = spotService.findById(createPostDto.getSpot());
 
         PostEntity postEntity = new PostEntity();
-        postEntity.setAuthor(userEntity);
         postEntity.setSpot(spotEntity);
         postEntity.setContent(createPostDto.getContent());
         return postEntity;

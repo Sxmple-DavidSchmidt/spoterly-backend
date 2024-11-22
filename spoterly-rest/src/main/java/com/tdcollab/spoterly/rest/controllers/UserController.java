@@ -1,9 +1,8 @@
 package com.tdcollab.spoterly.rest.controllers;
 
-import com.tdcollab.spoterly.core.dtos.post.PostDto;
-import com.tdcollab.spoterly.core.dtos.spot.SpotDto;
-import com.tdcollab.spoterly.core.dtos.user.UserDto;
-import com.tdcollab.spoterly.core.entities.UserEntity;
+import com.tdcollab.spoterly.core.dtos.post.MinimalPostDto;
+import com.tdcollab.spoterly.core.dtos.spot.MinimalSpotDto;
+import com.tdcollab.spoterly.core.dtos.user.MinimalUserDto;
 import com.tdcollab.spoterly.core.exceptions.*;
 import com.tdcollab.spoterly.core.mappers.PostMapper;
 import com.tdcollab.spoterly.core.mappers.SpotMapper;
@@ -11,6 +10,7 @@ import com.tdcollab.spoterly.core.mappers.UserMapper;
 import com.tdcollab.spoterly.core.services.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -31,14 +31,8 @@ public class UserController {
         this.spotMapper = spotMapper;
     }
 
-    @PostMapping()
-    public ResponseEntity<UserDto> createUser(@RequestBody UserDto user) {
-        UserEntity mappedUser = userMapper.fromUserDto(user);
-        UserEntity savedUser = userService.createUser(mappedUser);
-        return new ResponseEntity<>(userMapper.fromUserEntity(savedUser),HttpStatus.CREATED);
-    }
-
     @PostMapping(path = "/{username}/likePost/{postId}")
+    @PreAuthorize("@userSecurity.isCurrentUser(#username)")
     public ResponseEntity<String> likePost(@PathVariable("username") String username, @PathVariable("postId") String postIdString) {
         UUID postId = UUID.fromString(postIdString);
         userService.likePost(username, postId);
@@ -46,6 +40,7 @@ public class UserController {
     }
 
     @PostMapping(path = "/{username}/unlikePost/{postId}")
+    @PreAuthorize("@userSecurity.isCurrentUser(#username)")
     public ResponseEntity<String> unlikePost(@PathVariable("username") String username, @PathVariable("postId") String postIdString) {
         UUID postId = UUID.fromString(postIdString);
         userService.unlikePost(username, postId);
@@ -53,6 +48,7 @@ public class UserController {
     }
 
     @PostMapping(path = "/{username}/likeSpot/{spotId}")
+    @PreAuthorize("@userSecurity.isCurrentUser(#username)")
     public ResponseEntity<String> likeSpot(@PathVariable("username") String username, @PathVariable("spotId") String spotIdString) {
         UUID spotId = UUID.fromString(spotIdString);
         userService.likeSpot(username, spotId);
@@ -60,6 +56,7 @@ public class UserController {
     }
 
     @PostMapping(path = "/{username}/unlikeSpot/{spotId}")
+    @PreAuthorize("@userSecurity.isCurrentUser(#username)")
     public ResponseEntity<String> unlikeSpot(@PathVariable("username") String username, @PathVariable("spotId") String spotIdString) {
         UUID spotId = UUID.fromString(spotIdString);
         userService.unlikeSpot(username, spotId);
@@ -67,23 +64,23 @@ public class UserController {
     }
 
     @GetMapping(path = "/{username}")
-    public UserDto getUserByUsername(@PathVariable("username") String username) {
-        return userMapper.fromUserEntity(userService.findByUsername(username));
+    public MinimalUserDto getUserByUsername(@PathVariable("username") String username) {
+        return userMapper.minimalFromUserEntity(userService.findByUsername(username));
     }
 
     @GetMapping(path = "/{username}/likedPosts")
-    public List<PostDto> getLikedPostsByUsername(@PathVariable("username") String username) {
+    public List<MinimalPostDto> getLikedPostsByUsername(@PathVariable("username") String username) {
         return userService.findByUsername(username).getLikedPosts()
                 .stream()
-                .map(postMapper::fromPostEntity)
+                .map(postMapper::minimalFromPostEntity)
                 .toList();
     }
 
     @GetMapping(path = "/{username}/likedSpots")
-    public List<SpotDto> getLikedSpotsByUsername(@PathVariable("username") String username) {
+    public List<MinimalSpotDto> getLikedSpotsByUsername(@PathVariable("username") String username) {
         return userService.findByUsername(username).getLikedSpots()
                 .stream()
-                .map(spotMapper::fromSpotEntity)
+                .map(spotMapper::minimalFromSpotEntity)
                 .toList();
     }
 

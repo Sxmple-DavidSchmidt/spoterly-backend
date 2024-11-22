@@ -1,23 +1,26 @@
 package com.tdcollab.spoterly.core.mappers;
 
 import com.tdcollab.spoterly.core.dtos.spot.CreateSpotDto;
-import com.tdcollab.spoterly.core.dtos.spot.DeleteSpotDto;
+import com.tdcollab.spoterly.core.dtos.spot.MinimalSpotDto;
 import com.tdcollab.spoterly.core.dtos.spot.SpotDto;
+import com.tdcollab.spoterly.core.dtos.user.UserDto;
 import com.tdcollab.spoterly.core.entities.SpotEntity;
-import com.tdcollab.spoterly.core.services.SpotService;
 import org.springframework.stereotype.Component;
 
 @Component
 public class SpotMapper {
-    private final SpotService spotService;
+    private final UserMapper userMapper;
 
-    public SpotMapper(SpotService spotService) {
-        this.spotService = spotService;
+    public SpotMapper(UserMapper userMapper) {
+        this.userMapper = userMapper;
     }
 
     public SpotDto fromSpotEntity(SpotEntity spotEntity) {
+        UserDto userDto = userMapper.fromUserEntity(spotEntity.getAuthor());
+
         SpotDto spotDto = new SpotDto();
         spotDto.setId(spotEntity.getId());
+        spotDto.setAuthor(userDto);
         spotDto.setName(spotEntity.getName());
         spotDto.setDescription(spotEntity.getDescription());
         spotDto.setLongitude(spotEntity.getLatitude());
@@ -25,28 +28,23 @@ public class SpotMapper {
         return spotDto;
     }
 
-    public SpotEntity fromSpotDto(SpotDto spotDto) {
-        SpotEntity spotEntity = new SpotEntity();
-        spotEntity.setId(spotDto.getId());
-        spotEntity.setName(spotDto.getName());
-        spotEntity.setDescription(spotDto.getDescription());
-        spotEntity.setLongitude(spotDto.getLatitude());
-        spotEntity.setLongitude(spotDto.getLongitude());
-        return spotEntity;
+    public MinimalSpotDto minimalFromSpotEntity(SpotEntity spotEntity) {
+        MinimalSpotDto minimalSpotDto = new MinimalSpotDto();
+        minimalSpotDto.setId(spotEntity.getId());
+        minimalSpotDto.setAuthor_id(spotEntity.getAuthor().getUsername());
+        minimalSpotDto.setName(spotEntity.getName());
+        minimalSpotDto.setDescription(spotEntity.getDescription());
+        minimalSpotDto.setLatitude(spotEntity.getLatitude());
+        minimalSpotDto.setLongitude(spotEntity.getLongitude());
+        return minimalSpotDto;
     }
 
     public SpotEntity entityFromCreateSpotDto(CreateSpotDto createSpotDto) {
         SpotEntity spotEntity = new SpotEntity();
-        // id is generated in constructor
         spotEntity.setName(createSpotDto.getName());
         spotEntity.setDescription(createSpotDto.getDescription());
         spotEntity.setLatitude(createSpotDto.getLatitude());
         spotEntity.setLongitude(createSpotDto.getLongitude());
         return spotEntity;
-    }
-
-    public SpotDto entityFromDeleteSpotDto(DeleteSpotDto deleteSpotDto) {
-        SpotEntity spotEntity = spotService.findById(deleteSpotDto.getId());
-        return fromSpotEntity(spotEntity);
     }
 }

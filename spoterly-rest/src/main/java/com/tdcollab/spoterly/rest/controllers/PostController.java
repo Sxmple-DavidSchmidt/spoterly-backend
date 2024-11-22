@@ -1,17 +1,20 @@
 package com.tdcollab.spoterly.rest.controllers;
 
 import com.tdcollab.spoterly.core.dtos.post.CreatePostDto;
-import com.tdcollab.spoterly.core.dtos.post.PostDto;
-import com.tdcollab.spoterly.core.dtos.user.UserDto;
+import com.tdcollab.spoterly.core.dtos.post.MinimalPostDto;
+import com.tdcollab.spoterly.core.dtos.user.MinimalUserDto;
 import com.tdcollab.spoterly.core.entities.PostEntity;
+import com.tdcollab.spoterly.core.entities.UserEntity;
 import com.tdcollab.spoterly.core.exceptions.PostNotFoundException;
 import com.tdcollab.spoterly.core.exceptions.SpotNotFoundException;
 import com.tdcollab.spoterly.core.exceptions.UserNotFoundException;
 import com.tdcollab.spoterly.core.mappers.PostMapper;
 import com.tdcollab.spoterly.core.mappers.UserMapper;
 import com.tdcollab.spoterly.core.services.PostService;
+import com.tdcollab.spoterly.core.services.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,42 +28,48 @@ public class PostController {
     private final PostMapper postMapper;
     private final PostService postService;
     private final UserMapper userMapper;
+    private final UserService userService;
 
-    public PostController(PostMapper postMapper, PostService postService, UserMapper userMapper) {
+    public PostController(PostMapper postMapper, PostService postService, UserMapper userMapper, UserService userService) {
         this.postMapper = postMapper;
         this.postService = postService;
         this.userMapper = userMapper;
+        this.userService = userService;
     }
 
-    @PostMapping
-    public ResponseEntity<PostDto> createPost(@RequestBody CreatePostDto createPostDto) {
+    @PostMapping("/{username}/createPost")
+    @PreAuthorize("@userSecurity.isCurrentUser(#username)")
+    public ResponseEntity<MinimalPostDto> createPost(@RequestBody CreatePostDto createPostDto, @PathVariable String username) {
+        UserEntity userEntity = userService.findByUsername(username);
+
         PostEntity postEntity = postMapper.entityFromCreatePostDto(createPostDto);
+        postEntity.setAuthor(userEntity);
         PostEntity savedPost = postService.createPost(postEntity);
-        PostDto savedPostDto = postMapper.fromPostEntity(savedPost);
-        return new ResponseEntity<>(savedPostDto, HttpStatus.CREATED);
+        MinimalPostDto minimalSavedPostDto = postMapper.minimalFromPostEntity(savedPost);
+        return new ResponseEntity<>(minimalSavedPostDto, HttpStatus.CREATED);
     }
 
     @GetMapping
-    public List<PostDto> getPosts() {
+    public List<MinimalPostDto> getPosts() {
         List<PostEntity> postEntities = postService.findAll();
         return postEntities
                 .stream()
-                .map(postMapper::fromPostEntity)
+                .map(postMapper::minimalFromPostEntity)
                 .toList();
     }
 
     @GetMapping("/{id}")
-    public PostDto getPostById(@PathVariable("id") UUID id) {
+    public MinimalPostDto getPostById(@PathVariable("id") UUID id) {
         PostEntity postEntity = postService.findById(id);
-        return postMapper.fromPostEntity(postEntity);
+        return postMapper.minimalFromPostEntity(postEntity);
     }
 
     @GetMapping("/{id}/likingUsers")
-    public Set<UserDto> getLikingUsers(@PathVariable("id") UUID id) {
+    public Set<MinimalUserDto> getLikingUsers(@PathVariable("id") UUID id) {
         PostEntity postEntity = postService.findById(id);
         return postEntity.getLikedByUsers()
                 .stream()
-                .map(userMapper::fromUserEntity)
+                .map(userMapper::minimalFromUserEntity)
                 .collect(Collectors.toSet());
     }
 

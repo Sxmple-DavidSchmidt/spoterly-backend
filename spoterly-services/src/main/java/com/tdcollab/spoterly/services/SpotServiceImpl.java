@@ -41,4 +41,10 @@ public class SpotServiceImpl implements SpotService {
                 Collectors.toList()
         );
     }
+
+    @Override
+    public void deleteSpot(UUID id) {
+        SpotEntity spotEntity = findById(id);
+        spotRepository.delete(spotEntity);
+    }
 }
