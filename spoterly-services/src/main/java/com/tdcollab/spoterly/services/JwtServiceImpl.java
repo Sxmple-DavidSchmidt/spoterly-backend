@@ -2,7 +2,6 @@ package com.tdcollab.spoterly.services;
 
 import com.tdcollab.spoterly.core.entities.UserEntity;
 import com.tdcollab.spoterly.core.services.JwtService;
-import com.tdcollab.spoterly.core.services.UserService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;

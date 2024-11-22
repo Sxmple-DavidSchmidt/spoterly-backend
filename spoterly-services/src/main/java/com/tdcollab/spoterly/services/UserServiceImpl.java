@@ -11,7 +11,6 @@ import com.tdcollab.spoterly.core.services.UserService;
 import com.tdcollab.spoterly.core.exceptions.PostAlreadyLikedException;
 import com.tdcollab.spoterly.core.exceptions.SpotAlreadyLikedException;
 import com.tdcollab.spoterly.core.exceptions.UserNotFoundException;
-import org.apache.catalina.User;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;

@@ -2,15 +2,11 @@ package com.tdcollab.spoterly.rest.controllers;
 
 import com.tdcollab.spoterly.core.dtos.auth.LoginDto;
 import com.tdcollab.spoterly.core.dtos.auth.RegisterDto;
-import com.tdcollab.spoterly.core.dtos.user.UserDto;
 import com.tdcollab.spoterly.core.entities.UserEntity;
 import com.tdcollab.spoterly.core.exceptions.*;
 import com.tdcollab.spoterly.core.mappers.UserMapper;
 import com.tdcollab.spoterly.core.model.AuthenticationResponse;
 import com.tdcollab.spoterly.core.services.AuthenticationService;
-import com.tdcollab.spoterly.core.services.UserService;
-import lombok.AllArgsConstructor;
-import lombok.Data;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
