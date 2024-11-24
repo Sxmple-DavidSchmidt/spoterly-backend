@@ -1,6 +1,7 @@
 package com.tdcollab.spoterly.services;
 
 import com.tdcollab.spoterly.core.entities.PostEntity;
+import com.tdcollab.spoterly.core.entities.Role;
 import com.tdcollab.spoterly.core.entities.SpotEntity;
 import com.tdcollab.spoterly.core.entities.UserEntity;
 import com.tdcollab.spoterly.core.services.PostService;
@@ -10,7 +11,6 @@ import com.tdcollab.spoterly.core.services.UserService;
 import com.tdcollab.spoterly.core.exceptions.PostAlreadyLikedException;
 import com.tdcollab.spoterly.core.exceptions.SpotAlreadyLikedException;
 import com.tdcollab.spoterly.core.exceptions.UserNotFoundException;
-import org.apache.catalina.User;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -29,25 +29,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserEntity createUser(UserEntity user) {
-        return userRepository.save(user);
-    }
-
-    @Override
     public UserEntity findByUsername(String username) {
         Optional<UserEntity> userEntity = userRepository.findByUsername(username);
-        if (userEntity.isEmpty()) throw new UserNotFoundException("Could not find User with username: \"" + username + "\"");
+        if (userEntity.isEmpty()) throw new UserNotFoundException("Could not find user with username: \"" + username + "\"");
         return userEntity.get();
-    }
-
-    public UserEntity authenticate(String username, String password) {
-        Optional<UserEntity> user = userRepository.findByUsername(username);
-
-        if(user.isPresent() && user.get().getPassword().equals(password)){
-            return user.get();
-        }
-
-        return null;
     }
 
     @Override
@@ -105,6 +90,19 @@ public class UserServiceImpl implements UserService {
             throw new PostAlreadyLikedException("User \"" + username + "\" has not liked spot with id \"" + spotId + "\"");
         }
 
+        userRepository.save(userEntity);
+    }
+
+    @Override
+    public void deleteUser(String username) {
+        UserEntity userEntity = findByUsername(username);
+        userRepository.delete(userEntity);
+    }
+
+    @Override
+    public void setRole(String username, Role role) {
+        UserEntity userEntity = findByUsername(username);
+        userEntity.setRole(role);
         userRepository.save(userEntity);
     }
 }

@@ -41,4 +41,10 @@ public class PostServiceImpl implements PostService {
                 Collectors.toList()
         );
     }
+
+    @Override
+    public void deletePost(UUID id) {
+        PostEntity postEntity = findById(id);
+        postRepository.delete(postEntity);
+    }
 }

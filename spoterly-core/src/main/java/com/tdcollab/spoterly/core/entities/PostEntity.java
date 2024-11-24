@@ -20,11 +20,11 @@ public class PostEntity {
     @UuidGenerator
     private UUID id;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "spot_id")
     private SpotEntity spot;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "author_id")
     private UserEntity author;
 

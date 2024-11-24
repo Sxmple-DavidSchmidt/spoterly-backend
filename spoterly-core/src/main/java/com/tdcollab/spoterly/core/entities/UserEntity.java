@@ -2,9 +2,13 @@ package com.tdcollab.spoterly.core.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
-import java.security.Principal;
+import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Data
@@ -13,7 +17,7 @@ import java.util.Set;
 @Entity
 @EqualsAndHashCode(exclude = {"likedPosts", "likedSpots"})
 @Table(name = "users")
-public class UserEntity implements Principal {
+public class UserEntity implements UserDetails {
     @Id
     private String username;
 
@@ -23,7 +27,8 @@ public class UserEntity implements Principal {
 
     private String password;
 
-    private String email;
+    @Enumerated(value = EnumType.STRING)
+    private Role role;
 
     @ManyToMany(mappedBy = "likedByUsers")
     private Set<PostEntity> likedPosts = new HashSet<>();
@@ -32,7 +37,27 @@ public class UserEntity implements Principal {
     private Set<SpotEntity> likedSpots = new HashSet<>();
 
     @Override
-    public String getName() {
-        return this.firstname + " " + this.lastname;
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority(role.name()));
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
     }
 }

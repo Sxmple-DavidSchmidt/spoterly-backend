@@ -23,6 +23,10 @@ public class SpotEntity {
     @UuidGenerator
     private UUID id;
 
+    @ManyToOne
+    @JoinColumn(name = "author_id")
+    private UserEntity author;
+
     private String name;
 
     private String description;
@@ -30,8 +34,6 @@ public class SpotEntity {
     private double latitude;
 
     private double longitude;
-
-    private String city;
 
     @ManyToMany
     @JoinTable(

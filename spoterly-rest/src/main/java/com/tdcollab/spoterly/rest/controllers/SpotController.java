@@ -1,15 +1,19 @@
 package com.tdcollab.spoterly.rest.controllers;
 
-import com.tdcollab.spoterly.core.dtos.CreateSpotDto;
-import com.tdcollab.spoterly.core.dtos.SpotDto;
-import com.tdcollab.spoterly.core.dtos.UserDto;
+import com.tdcollab.spoterly.core.dtos.spot.CreateSpotDto;
+import com.tdcollab.spoterly.core.dtos.spot.MinimalSpotDto;
+import com.tdcollab.spoterly.core.dtos.user.MinimalUserDto;
 import com.tdcollab.spoterly.core.entities.SpotEntity;
+import com.tdcollab.spoterly.core.entities.UserEntity;
 import com.tdcollab.spoterly.core.exceptions.SpotNotFoundException;
-import com.tdcollab.spoterly.core.mappers.Mapper;
-import com.tdcollab.spoterly.core.mappers.impl.UserMapper;
+import com.tdcollab.spoterly.core.exceptions.UserNotFoundException;
+import com.tdcollab.spoterly.core.mappers.SpotMapper;
+import com.tdcollab.spoterly.core.mappers.UserMapper;
 import com.tdcollab.spoterly.core.services.SpotService;
+import com.tdcollab.spoterly.core.services.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,60 +25,62 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/spots")
 public class SpotController {
-    private final Mapper<SpotEntity, CreateSpotDto> spotMapper;
+    private final SpotMapper spotMapper;
     private final SpotService spotService;
     private final UserMapper userMapper;
+    private final UserService userService;
 
-    public SpotController(Mapper<SpotEntity, CreateSpotDto> spotMapper, SpotService spotService, UserMapper userMapper) {
+    public SpotController(SpotMapper spotMapper, SpotService spotService, UserMapper userMapper, UserService userService) {
         this.spotMapper = spotMapper;
         this.spotService = spotService;
         this.userMapper = userMapper;
+        this.userService = userService;
     }
 
-    @PostMapping
-    public ResponseEntity<SpotDto> createSpot(@RequestBody CreateSpotDto spotDto) {
-        SpotEntity spotEntity = spotMapper.mapFrom(spotDto);
-        SpotEntity savedSpot = spotService.createSpot(spotEntity);
-
-        SpotDto spot = new SpotDto(savedSpot.getId(), savedSpot.getName(), savedSpot.getDescription(), savedSpot.getLatitude(), savedSpot.getLongitude(), savedSpot.getCity());
-
-        return new ResponseEntity<>(spot, HttpStatus.CREATED);
+    @PostMapping("/{username}/createSpot")
+    @PreAuthorize("@userSecurity.isCurrentUserOrAdmin(#username)")
+    public ResponseEntity<MinimalSpotDto> createSpot(@RequestBody CreateSpotDto spotDto, @PathVariable("username") String username) {
+        UserEntity userEntity = userService.findByUsername(username);
+        SpotEntity spotEntity = spotMapper.entityFromCreateSpotDto(spotDto);
+        spotEntity.setAuthor(userEntity);
+        SpotEntity savedSpotEntity = spotService.createSpot(spotEntity);
+        MinimalSpotDto savedMinimalSpotDto = spotMapper.minimalFromSpotEntity(savedSpotEntity);
+        return new ResponseEntity<>(savedMinimalSpotDto, HttpStatus.CREATED);
     }
 
     @GetMapping
-    public List<SpotDto> getSpots() {
+    public List<MinimalSpotDto> getSpots() {
         List<SpotEntity> spotEntities = spotService.findAll();
-
-        return spotEntities.stream().map(entity -> {
-            return new SpotDto(entity.getId(), entity.getName(), entity.getDescription(), entity.getLatitude(), entity.getLongitude(), entity.getCity());
-
-        }).toList();
-//        return spotEntities
-//                .stream()
-//                .map(spotMapper::mapTo)
-//                .toList();
+        return spotEntities
+                .stream()
+                .map(spotMapper::minimalFromSpotEntity)
+                .toList();
     }
 
     @GetMapping("/{id}")
-    public SpotDto getSpotById(@PathVariable("id") String id) {
-
-        UUID uuid = UUID.fromString(id);
-        SpotEntity spotEntity = spotService.findById(uuid);
-
-        return new SpotDto(spotEntity.getId(), spotEntity.getName(), spotEntity.getDescription(), spotEntity.getLatitude(), spotEntity.getLongitude(), spotEntity.getCity());
+    public MinimalSpotDto getSpotById(@PathVariable("id") String spotIdString) {
+        UUID spotId = UUID.fromString(spotIdString);
+        SpotEntity spotEntity = spotService.findById(spotId);
+        return spotMapper.minimalFromSpotEntity(spotEntity);
     }
 
     @GetMapping("/{id}/likingUsers")
-    public Set<UserDto> getLikingUsers(@PathVariable("id") UUID id) {
-        SpotEntity spotEntity = spotService.findById(id);
+    public Set<MinimalUserDto> getLikingUsers(@PathVariable("id") String spotIdString) {
+        UUID spotId = UUID.fromString(spotIdString);
+        SpotEntity spotEntity = spotService.findById(spotId);
         return spotEntity.getLikedByUsers()
                 .stream()
-                .map(userMapper::mapTo)
+                .map(userMapper::minimalFromUserEntity)
                 .collect(Collectors.toSet());
     }
 
     @ExceptionHandler(SpotNotFoundException.class)
     public ResponseEntity<String> handleSpotNotFoundException(SpotNotFoundException e) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+    }
+
+    @ExceptionHandler(UserNotFoundException.class)
+    public ResponseEntity<String> handleUserNotFoundException(UserNotFoundException e) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
     }
 }

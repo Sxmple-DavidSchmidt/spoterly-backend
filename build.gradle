@@ -8,20 +8,18 @@ plugins {
 
 apply plugin: 'io.spring.dependency-management'
 
-
 java {
 	sourceCompatibility = JavaVersion.VERSION_17
 }
 
 subprojects {
-	group = 'com.ttcollab.spoterly'
+	group = 'com.tdcollab.spoterly'
 	version = '0.1.0'
 
 	apply plugin: 'java'
 
 	test {
 		useJUnitPlatform()
-
 	}
 }
 
@@ -34,6 +32,12 @@ allprojects {
 	repositories {
 		mavenCentral() // Add Maven Central repository
 	}
+
+	tasks.withType(JavaCompile).tap {
+		configureEach {
+			options.compilerArgs << '-parameters'
+		}
+	}
 }
 
 dependencyManagement {
@@ -41,5 +45,3 @@ dependencyManagement {
 		mavenBom SpringBootPlugin.BOM_COORDINATES
 	}
 }
-
-
