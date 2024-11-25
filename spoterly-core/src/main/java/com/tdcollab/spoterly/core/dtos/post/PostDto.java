@@ -1,6 +1,7 @@
 package com.tdcollab.spoterly.core.dtos.post;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.tdcollab.spoterly.core.dtos.image.ImageDto;
 import com.tdcollab.spoterly.core.dtos.spot.SpotDto;
 import com.tdcollab.spoterly.core.dtos.user.UserDto;
 import lombok.Data;
@@ -21,6 +22,12 @@ public class PostDto {
 
     @JsonProperty("author")
     private UserDto author;
+
+    @JsonProperty("image")
+    private ImageDto image;
+
+    @JsonProperty("title")
+    private String title;
 
     @JsonProperty("content")
     private String content;
