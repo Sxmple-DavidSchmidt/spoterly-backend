@@ -16,7 +16,7 @@ import java.io.IOException;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/images")
+@RequestMapping("api/images")
 public class ImageController {
     private final ImageService imageService;
     private final ImageMapper imageMapper;

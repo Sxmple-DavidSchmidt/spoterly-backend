@@ -23,7 +23,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/posts")
+@RequestMapping("api/posts")
 public class PostController {
     private final PostMapper postMapper;
     private final PostService postService;
