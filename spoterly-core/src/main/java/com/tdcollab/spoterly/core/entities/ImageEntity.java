@@ -20,6 +20,7 @@ public class ImageEntity {
     private UUID id;
 
     @Lob
+    @Basic(fetch = FetchType.EAGER)
     private byte[] imageData;
 
     private String fileType;

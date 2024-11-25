@@ -22,6 +22,7 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+@CrossOrigin
 @RestController
 @RequestMapping("api/posts")
 public class PostController {
@@ -71,6 +72,15 @@ public class PostController {
                 .stream()
                 .map(userMapper::minimalFromUserEntity)
                 .collect(Collectors.toSet());
+    }
+
+    @GetMapping("/spot/{id}")
+    public List<MinimalPostDto> getPostsBySpot(@PathVariable("id") UUID id) {
+        List<PostEntity> postEntities = postService.findBySpotId(id);
+
+        return postEntities
+                .stream().map(postMapper::minimalFromPostEntity)
+                .toList();
     }
 
     @ExceptionHandler(UserNotFoundException.class)

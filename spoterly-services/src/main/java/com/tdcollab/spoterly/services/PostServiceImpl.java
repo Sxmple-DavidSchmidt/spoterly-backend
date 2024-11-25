@@ -1,11 +1,15 @@
 package com.tdcollab.spoterly.services;
 
 import com.tdcollab.spoterly.core.entities.PostEntity;
+import com.tdcollab.spoterly.core.entities.SpotEntity;
 import com.tdcollab.spoterly.repositories.PostRepository;
 import com.tdcollab.spoterly.core.services.PostService;
 import com.tdcollab.spoterly.core.exceptions.SpotNotFoundException;
+import com.tdcollab.spoterly.repositories.SpotRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -15,9 +19,11 @@ import java.util.stream.StreamSupport;
 @Service
 public class PostServiceImpl implements PostService {
     private final PostRepository postRepository;
+    private final SpotRepository spotRepository;
 
-    public PostServiceImpl(PostRepository postRepository) {
+    public PostServiceImpl(PostRepository postRepository, SpotRepository spotRepository) {
         this.postRepository = postRepository;
+        this.spotRepository = spotRepository;
     }
 
     @Override
@@ -40,6 +46,19 @@ public class PostServiceImpl implements PostService {
         ).collect(
                 Collectors.toList()
         );
+    }
+
+    @Override
+    @Transactional
+    public List<PostEntity> findBySpotId(UUID id) {
+
+        Optional<SpotEntity> spotEntity = spotRepository.findById(id);
+
+        if(spotEntity.isPresent()){
+            return new ArrayList<>(postRepository.findAllBySpotId(id));
+        }
+        return null;
+
     }
 
     @Override
