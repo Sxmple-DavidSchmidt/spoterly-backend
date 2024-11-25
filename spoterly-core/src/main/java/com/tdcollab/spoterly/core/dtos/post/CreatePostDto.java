@@ -17,6 +17,9 @@ public class CreatePostDto {
     @JsonProperty("image_id")
     private UUID image;
 
+    @JsonProperty("title")
+    private String title;
+
     @JsonProperty("content")
     private String content;
 }
