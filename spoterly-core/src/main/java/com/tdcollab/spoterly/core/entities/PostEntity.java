@@ -28,6 +28,10 @@ public class PostEntity {
     @JoinColumn(name = "author_id")
     private UserEntity author;
 
+    @ManyToOne
+    @JoinColumn(name = "image_id")
+    private ImageEntity image;
+
     private String content;
 
     @ManyToMany

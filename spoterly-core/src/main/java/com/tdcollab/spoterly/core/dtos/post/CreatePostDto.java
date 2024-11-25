@@ -14,6 +14,9 @@ public class CreatePostDto {
     @JsonProperty("spot_id")
     private UUID spot;
 
+    @JsonProperty("image_id")
+    private UUID image;
+
     @JsonProperty("content")
     private String content;
 }

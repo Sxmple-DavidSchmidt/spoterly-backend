@@ -20,6 +20,9 @@ public class MinimalPostDto {
     @JsonProperty("author_id")
     private String author_id;
 
+    @JsonProperty("image_id")
+    private UUID image;
+
     @JsonProperty("content")
     private String content;
 }
