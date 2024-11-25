@@ -1,7 +1,6 @@
 package com.tdcollab.spoterly.core.dtos.post;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.tdcollab.spoterly.core.dtos.image.ImageDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
