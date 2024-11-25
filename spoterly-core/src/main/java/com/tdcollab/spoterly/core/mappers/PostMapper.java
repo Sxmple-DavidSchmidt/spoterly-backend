@@ -30,6 +30,7 @@ public class PostMapper {
         minimalPostDto.setAuthor_id(author_id);
         minimalPostDto.setSpot_id(spot_id);
         minimalPostDto.setImage(postEntity.getImage().getId());
+        minimalPostDto.setTitle(postEntity.getTitle());
         minimalPostDto.setContent(postEntity.getContent());
         return minimalPostDto;
     }
@@ -41,6 +42,7 @@ public class PostMapper {
         PostEntity postEntity = new PostEntity();
         postEntity.setSpot(spotEntity);
         postEntity.setContent(createPostDto.getContent());
+        postEntity.setTitle(createPostDto.getTitle());
         postEntity.setImage(imageEntity);
         return postEntity;
     }

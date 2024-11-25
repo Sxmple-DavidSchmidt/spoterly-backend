@@ -32,6 +32,8 @@ public class PostEntity {
     @JoinColumn(name = "image_id")
     private ImageEntity image;
 
+    private String title;
+
     private String content;
 
     @ManyToMany

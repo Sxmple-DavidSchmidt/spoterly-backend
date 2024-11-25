@@ -26,6 +26,9 @@ public class PostDto {
     @JsonProperty("image")
     private ImageDto image;
 
+    @JsonProperty("title")
+    private String title;
+
     @JsonProperty("content")
     private String content;
 }
