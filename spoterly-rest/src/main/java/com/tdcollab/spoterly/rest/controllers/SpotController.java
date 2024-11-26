@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 
 @CrossOrigin
 @RestController
-@RequestMapping("/spots")
+@RequestMapping("api/spots")
 public class SpotController {
     private final SpotMapper spotMapper;
     private final SpotService spotService;
