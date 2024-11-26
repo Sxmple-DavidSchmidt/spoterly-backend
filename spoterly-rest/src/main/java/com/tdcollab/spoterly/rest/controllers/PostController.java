@@ -77,9 +77,9 @@ public class PostController {
     @GetMapping("/spot/{id}")
     public List<MinimalPostDto> getPostsBySpot(@PathVariable("id") UUID id) {
         List<PostEntity> postEntities = postService.findBySpotId(id);
-
         return postEntities
-                .stream().map(postMapper::minimalFromPostEntity)
+                .stream()
+                .map(postMapper::minimalFromPostEntity)
                 .toList();
     }
 
