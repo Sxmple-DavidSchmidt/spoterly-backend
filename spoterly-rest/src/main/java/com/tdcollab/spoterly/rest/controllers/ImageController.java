@@ -15,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.UUID;
 
+@CrossOrigin
 @RestController
 @RequestMapping("api/images")
 public class ImageController {

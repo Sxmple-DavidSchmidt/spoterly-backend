@@ -9,5 +9,6 @@ public interface PostService {
     PostEntity createPost(PostEntity postEntity);
     PostEntity findById(UUID id);
     List<PostEntity> findAll();
+    List<PostEntity> findBySpotId(UUID id);
     void deletePost(UUID id);
 }
