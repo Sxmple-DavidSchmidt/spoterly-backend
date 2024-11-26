@@ -34,7 +34,7 @@ public class PostServiceImpl implements PostService {
     @Override
     public PostEntity findById(UUID id) {
         Optional<PostEntity> postEntity = postRepository.findById(id);
-        if (postEntity.isEmpty()) throw new SpotNotFoundException("Could not find Post with id \"" + id + "\"");
+        if (postEntity.isEmpty()) throw new PostNotFoundException("Could not find Post with id \"" + id + "\"");
         return postEntity.get();
     }
 
@@ -51,14 +51,9 @@ public class PostServiceImpl implements PostService {
     @Override
     @Transactional
     public List<PostEntity> findBySpotId(UUID id) {
-
         Optional<SpotEntity> spotEntity = spotRepository.findById(id);
-
-        if(spotEntity.isPresent()){
-            return new ArrayList<>(postRepository.findAllBySpotId(id));
-        }
-        return null;
-
+        if (spotEntity.isEmpty()) throw new SpotNotFoundException("Could not find Spot id \"" + id + "\"");
+        return new ArrayList<>(postRepository.findAllBySpotId(id));
     }
 
     @Override
