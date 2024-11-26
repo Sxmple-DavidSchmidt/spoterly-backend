@@ -10,7 +10,7 @@ import java.util.UUID;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class  MinimalSpotDto {
+public class MinimalSpotDto {
     @JsonProperty("id")
     private UUID id;
 
