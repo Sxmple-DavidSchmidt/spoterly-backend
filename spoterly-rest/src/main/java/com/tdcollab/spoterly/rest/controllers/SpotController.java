@@ -16,9 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @CrossOrigin
@@ -48,13 +46,28 @@ public class SpotController {
         return new ResponseEntity<>(savedMinimalSpotDto, HttpStatus.CREATED);
     }
 
-    @GetMapping
-    public List<MinimalSpotDto> getSpots() {
-        List<SpotEntity> spotEntities = spotService.findAll();
-        return spotEntities
+    @GetMapping()
+    public Set<MinimalSpotDto> getAllSpotsByAttribute(@RequestParam Map<String, String> query) {
+        double minLat = -Double.MAX_VALUE;
+        if (query.containsKey("minLatitude"))
+            minLat = Double.parseDouble(query.get("minLatitude"));
+
+        double maxLat = Double.MAX_VALUE;
+        if (query.containsKey("maxLatitude"))
+            maxLat = Double.parseDouble(query.get("maxLatitude"));
+
+        double minLon = -Double.MAX_VALUE;
+        if (query.containsKey("minLongitude"))
+            minLon = Double.parseDouble(query.get("minLongitude"));
+
+        double maxLon = Double.MAX_VALUE;
+        if (query.containsKey("maxLongitude"))
+            maxLon = Double.parseDouble(query.get("maxLongitude"));
+
+        return spotService.findAllByLatitudeAndLongitudeBetween(minLat, maxLat, minLon, maxLon)
                 .stream()
                 .map(spotMapper::minimalFromSpotEntity)
-                .toList();
+                .collect(Collectors.toSet());
     }
 
     @GetMapping("/{id}")
