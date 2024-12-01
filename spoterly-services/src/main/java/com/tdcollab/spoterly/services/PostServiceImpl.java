@@ -2,6 +2,7 @@ package com.tdcollab.spoterly.services;
 
 import com.tdcollab.spoterly.core.entities.PostEntity;
 import com.tdcollab.spoterly.core.entities.SpotEntity;
+import com.tdcollab.spoterly.core.exceptions.PostNotFoundException;
 import com.tdcollab.spoterly.repositories.PostRepository;
 import com.tdcollab.spoterly.core.services.PostService;
 import com.tdcollab.spoterly.core.exceptions.SpotNotFoundException;
