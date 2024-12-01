@@ -9,5 +9,6 @@ public interface SpotService {
     SpotEntity createSpot(SpotEntity spotEntity);
     SpotEntity findById(UUID id);
     List<SpotEntity> findAll();
+    List<SpotEntity> findAllByLatitudeAndLongitudeBetween(double minLatitude, double maxLatitude, double minLongitude, double maxLongitude);
     void deleteSpot(UUID id);
 }

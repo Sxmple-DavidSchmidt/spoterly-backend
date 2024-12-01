@@ -43,6 +43,11 @@ public class SpotServiceImpl implements SpotService {
     }
 
     @Override
+    public List<SpotEntity> findAllByLatitudeAndLongitudeBetween(double minLatitude, double maxLatitude, double minLongitude, double maxLongitude) {
+        return spotRepository.findAllByLatitudeBetweenAndLongitudeBetween(minLatitude, maxLatitude, minLongitude, maxLongitude);
+    }
+
+    @Override
     public void deleteSpot(UUID id) {
         SpotEntity spotEntity = findById(id);
         spotRepository.delete(spotEntity);
