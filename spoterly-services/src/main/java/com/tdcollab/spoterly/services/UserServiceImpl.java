@@ -11,6 +11,7 @@ import com.tdcollab.spoterly.core.services.UserService;
 import com.tdcollab.spoterly.core.exceptions.PostAlreadyLikedException;
 import com.tdcollab.spoterly.core.exceptions.SpotAlreadyLikedException;
 import com.tdcollab.spoterly.core.exceptions.UserNotFoundException;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -29,6 +30,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional()
     public UserEntity findByUsername(String username) {
         Optional<UserEntity> userEntity = userRepository.findByUsername(username);
         if (userEntity.isEmpty()) throw new UserNotFoundException("Could not find user with username: \"" + username + "\"");
@@ -36,6 +38,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public void likePost(String username, UUID postId) {
         UserEntity userEntity = findByUsername(username);
         PostEntity postEntity = postService.findById(postId);
@@ -51,6 +54,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public void unlikePost(String username, UUID postId) {
         UserEntity userEntity = findByUsername(username);
         PostEntity postEntity = postService.findById(postId);
@@ -64,6 +68,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public void likeSpot(String username, UUID spotId) {
         UserEntity userEntity = findByUsername(username);
         SpotEntity spotEntity = spotService.findById(spotId);
@@ -79,6 +84,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public void unlikeSpot(String username, UUID spotId) {
         UserEntity userEntity = findByUsername(username);
         SpotEntity spotEntity = spotService.findById(spotId);
@@ -94,12 +100,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public void deleteUser(String username) {
         UserEntity userEntity = findByUsername(username);
         userRepository.delete(userEntity);
     }
 
     @Override
+    @Transactional
     public void setRole(String username, Role role) {
         UserEntity userEntity = findByUsername(username);
         userEntity.setRole(role);

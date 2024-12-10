@@ -4,6 +4,7 @@ import com.tdcollab.spoterly.core.entities.SpotEntity;
 import com.tdcollab.spoterly.repositories.SpotRepository;
 import com.tdcollab.spoterly.core.services.SpotService;
 import com.tdcollab.spoterly.core.exceptions.SpotNotFoundException;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -43,6 +44,7 @@ public class SpotServiceImpl implements SpotService {
     }
 
     @Override
+    @Transactional
     public List<SpotEntity> findAllByLatitudeAndLongitudeBetween(double minLatitude, double maxLatitude, double minLongitude, double maxLongitude) {
         return spotRepository.findAllByLatitudeBetweenAndLongitudeBetween(minLatitude, maxLatitude, minLongitude, maxLongitude);
     }
