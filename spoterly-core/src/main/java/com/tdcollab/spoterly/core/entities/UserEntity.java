@@ -30,10 +30,10 @@ public class UserEntity implements UserDetails {
     @Enumerated(value = EnumType.STRING)
     private Role role;
 
-    @ManyToMany(mappedBy = "likedByUsers")
+    @ManyToMany(mappedBy = "likedByUsers", fetch = FetchType.EAGER)
     private Set<PostEntity> likedPosts = new HashSet<>();
 
-    @ManyToMany(mappedBy = "likedByUsers")
+    @ManyToMany(mappedBy = "likedByUsers", fetch = FetchType.EAGER)
     private Set<SpotEntity> likedSpots = new HashSet<>();
 
     @Override
