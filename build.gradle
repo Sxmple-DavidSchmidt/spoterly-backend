@@ -6,27 +6,9 @@ plugins {
 	id 'io.spring.dependency-management' version '1.0.11.RELEASE' // Or latest version
 }
 
-apply plugin: 'io.spring.dependency-management'
-
 java {
 	sourceCompatibility = JavaVersion.VERSION_17
 }
-
-subprojects {
-	group = 'com.tdcollab.spoterly'
-	version = '0.1.0'
-
-	apply plugin: 'java'
-
-	test {
-		useJUnitPlatform()
-	}
-}
-
-springBoot {
-	mainClass = 'com.ttcollab.spoterly.SpoterlyApplication'
-}
-
 
 allprojects {
 	repositories {
@@ -40,8 +22,21 @@ allprojects {
 	}
 }
 
+subprojects {
+	group = 'com.tdcollab.spoterly'
+	version = '0.1.0'
+
+	apply plugin: 'java'
+	apply plugin: 'io.spring.dependency-management'
+
+	test {
+		useJUnitPlatform()
+	}
+}
+
 dependencyManagement {
 	imports {
 		mavenBom SpringBootPlugin.BOM_COORDINATES
 	}
 }
+
