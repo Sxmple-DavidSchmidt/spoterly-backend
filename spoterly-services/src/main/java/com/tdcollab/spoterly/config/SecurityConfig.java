@@ -41,7 +41,7 @@ public class SecurityConfig {
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(req -> req
-                        .requestMatchers("/api/auth/login", "/api/auth/register", "/api/spots").permitAll()
+                        .requestMatchers("/api/auth/login", "/api/auth/register", "/api/spots/**", "/api/posts/spot/**", "/api/images/**").permitAll()
                         .requestMatchers("/admin/**").hasAnyAuthority("ADMIN")
                         .anyRequest().authenticated())
                 .userDetailsService(new UserDetailsServiceImpl())
