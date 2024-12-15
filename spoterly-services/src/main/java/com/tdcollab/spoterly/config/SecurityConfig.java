@@ -2,6 +2,7 @@ package com.tdcollab.spoterly.config;
 
 import com.tdcollab.spoterly.core.services.UserService;
 import com.tdcollab.spoterly.filters.JwtAuthenticationFilter;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -30,6 +31,9 @@ import java.util.List;
 @EnableMethodSecurity
 public class SecurityConfig {
     private final UserService userService;
+
+    @Value("${allowed.origin.additional:http://localhost:4200}")
+    private String additionalAllowedOrigin;
 
     public SecurityConfig(UserService userService) {
         this.userService = userService;
@@ -63,8 +67,10 @@ public class SecurityConfig {
 
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
+
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("http://localhost:4200")); // Angular origin
+        configuration.setAllowedOrigins(List.of(additionalAllowedOrigin));
+
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS")); // Allow HTTP methods
         configuration.setAllowedHeaders(List.of("*")); // Allow all headers
         configuration.setAllowCredentials(true); // Allow credentials like cookies or tokens
