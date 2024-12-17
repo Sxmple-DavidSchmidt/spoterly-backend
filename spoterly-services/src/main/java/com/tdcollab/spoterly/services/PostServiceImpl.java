@@ -55,7 +55,7 @@ public class PostServiceImpl implements PostService {
     @Override
     @Transactional
     public List<PostEntity> findBySpotId(UUID id) {
-        if (spotRepository.existsById(id))
+        if (!spotRepository.existsById(id))
             throw new SpotNotFoundException("Could not find Spot with id \"" + id + "\"");
         return postRepository.findAllBySpotId(id);
     }
