@@ -91,7 +91,7 @@ public class PostController {
                 .toList();
     }
 
-    @GetMapping("/spot/getPostsByUser/{username}")
+    @GetMapping("/getPostsByUser/{username}")
     public List<MinimalPostDto> getPostsByUser(@PathVariable("username") String username) {
         List<PostEntity> postEntities = postService.findByUsername(username);
         return postEntities
