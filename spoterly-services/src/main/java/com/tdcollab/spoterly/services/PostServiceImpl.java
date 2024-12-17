@@ -62,7 +62,7 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public List<PostEntity> findByUsername(String username) {
-        if (userRepository.existsByUsername(username))
+        if (!userRepository.existsByUsername(username))
             throw new UserNotFoundException("Could not find User with username \"" + username + "\"");
         return postRepository.findAllByAuthorUsername(username);
     }
