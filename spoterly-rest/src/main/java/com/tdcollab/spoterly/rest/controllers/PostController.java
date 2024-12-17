@@ -50,6 +50,14 @@ public class PostController {
         return new ResponseEntity<>(minimalSavedPostDto, HttpStatus.CREATED);
     }
 
+    @PostMapping("/{username}/deletePost/{id}")
+    @PreAuthorize("@userSecurity.isCurrentUser(#username)")
+    public ResponseEntity<String> deletePost(@PathVariable("username") String username, @PathVariable("id") String postIdString) {
+        UUID postId = UUID.fromString(postIdString);
+        postService.deletePost(postId);
+        return ResponseEntity.ok("Post with id \"" + postId + "\" deleted.");
+    }
+
     @GetMapping
     public List<MinimalPostDto> getPosts() {
         List<PostEntity> postEntities = postService.findAll();
