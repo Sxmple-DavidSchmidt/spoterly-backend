@@ -1,9 +1,7 @@
 package com.tdcollab.spoterly.services;
 
-import com.tdcollab.spoterly.core.entities.PostEntity;
-import com.tdcollab.spoterly.core.entities.Role;
-import com.tdcollab.spoterly.core.entities.SpotEntity;
-import com.tdcollab.spoterly.core.entities.UserEntity;
+import com.tdcollab.spoterly.core.entities.*;
+import com.tdcollab.spoterly.core.services.ImageService;
 import com.tdcollab.spoterly.core.services.PostService;
 import com.tdcollab.spoterly.core.services.SpotService;
 import com.tdcollab.spoterly.repositories.UserRepository;
@@ -22,11 +20,13 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final PostService postService;
     private final SpotService spotService;
+    private final ImageService imageService;
 
-    public UserServiceImpl(UserRepository userRepository, PostService postService, SpotService spotService) {
+    public UserServiceImpl(UserRepository userRepository, PostService postService, SpotService spotService, ImageService imageService) {
         this.userRepository = userRepository;
         this.postService = postService;
         this.spotService = spotService;
+        this.imageService = imageService;
     }
 
     @Override
@@ -111,6 +111,15 @@ public class UserServiceImpl implements UserService {
     public void setRole(String username, Role role) {
         UserEntity userEntity = findByUsername(username);
         userEntity.setRole(role);
+        userRepository.save(userEntity);
+    }
+
+    @Override
+    @Transactional
+    public void setProfilePicture(String username, UUID imageId) {
+        UserEntity userEntity = findByUsername(username);
+        ImageEntity imageEntity = imageService.findById(imageId);
+        userEntity.setProfilePicture(imageEntity);
         userRepository.save(userEntity);
     }
 }

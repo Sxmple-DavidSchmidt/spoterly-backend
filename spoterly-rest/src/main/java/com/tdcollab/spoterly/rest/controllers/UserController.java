@@ -63,6 +63,14 @@ public class UserController {
         return ResponseEntity.ok("Spot unliked successfully");
     }
 
+    @PostMapping(path = "/{username}/updateProfilePicture/{imageId}")
+    @PreAuthorize("@userSecurity.isCurrentUser(#username)")
+    public ResponseEntity<String> updateProfilePicture(@PathVariable("username") String username, @PathVariable("imageId") String imageIdString) {
+        UUID imageId = UUID.fromString(imageIdString);
+        userService.setProfilePicture(username, imageId);
+        return ResponseEntity.ok("Post liked successfully");
+    }
+
     @GetMapping(path = "/{username}")
     public MinimalUserDto getUserByUsername(@PathVariable("username") String username) {
         return userMapper.minimalFromUserEntity(userService.findByUsername(username));

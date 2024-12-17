@@ -30,6 +30,10 @@ public class UserEntity implements UserDetails {
     @Enumerated(value = EnumType.STRING)
     private Role role;
 
+    @ManyToOne
+    @JoinColumn(name = "image_id")
+    private ImageEntity profilePicture;
+
     @ManyToMany(mappedBy = "likedByUsers", fetch = FetchType.EAGER)
     private Set<PostEntity> likedPosts = new HashSet<>();
 

@@ -15,13 +15,13 @@ public class MinimalPostDto {
     private UUID id;
 
     @JsonProperty("spot_id")
-    private UUID spot_id;
+    private UUID spotId;
 
     @JsonProperty("author_id")
-    private String author_id;
+    private String authorId;
 
     @JsonProperty("image_id")
-    private UUID image;
+    private UUID imageId;
 
     @JsonProperty("title")
     private String title;

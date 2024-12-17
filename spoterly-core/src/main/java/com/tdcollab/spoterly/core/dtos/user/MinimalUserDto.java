@@ -6,10 +6,15 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.UUID;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class MinimalUserDto {
+    @JsonProperty("profile_picture_id")
+    private UUID profilePictureId;
+
     @JsonProperty("username")
     private String username;
 
