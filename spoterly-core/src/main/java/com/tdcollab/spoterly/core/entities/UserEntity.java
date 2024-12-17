@@ -36,7 +36,6 @@ public class UserEntity implements UserDetails {
     @Enumerated(value = EnumType.STRING)
     private Role role;
 
-    @NotNull(message = "image cannot be null")
     @ManyToOne
     @JoinColumn(name = "image_id")
     private ImageEntity profilePicture;
