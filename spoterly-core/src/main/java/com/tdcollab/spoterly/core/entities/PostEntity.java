@@ -1,6 +1,7 @@
 package com.tdcollab.spoterly.core.entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.hibernate.annotations.UuidGenerator;
 
@@ -15,25 +16,31 @@ import java.util.UUID;
 @EqualsAndHashCode(exclude = "likedByUsers")
 @Table(name = "posts")
 public class PostEntity {
+    @NotNull(message = "id cannot be null")
     @Id
     @GeneratedValue
     @UuidGenerator
     private UUID id;
 
+    @NotNull(message = "spot cannot be null")
     @ManyToOne
     @JoinColumn(name = "spot_id")
     private SpotEntity spot;
 
+    @NotNull(message = "author cannot be null")
     @ManyToOne
     @JoinColumn(name = "author_id")
     private UserEntity author;
 
+    @NotNull(message = "image cannot be null")
     @ManyToOne
     @JoinColumn(name = "image_id")
     private ImageEntity image;
 
+    @NotNull(message = "title cannot be null")
     private String title;
 
+    @NotNull(message = "content cannot be null")
     private String content;
 
     @ManyToMany

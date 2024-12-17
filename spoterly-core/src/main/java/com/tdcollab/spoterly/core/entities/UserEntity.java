@@ -1,6 +1,7 @@
 package com.tdcollab.spoterly.core.entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -18,18 +19,24 @@ import java.util.Set;
 @EqualsAndHashCode(exclude = {"likedPosts", "likedSpots"})
 @Table(name = "users")
 public class UserEntity implements UserDetails {
+    @NotNull(message = "id cannot be null")
     @Id
     private String username;
 
+    @NotNull(message = "firstname cannot be null")
     private String firstname;
 
+    @NotNull(message = "lastname cannot be null")
     private String lastname;
 
+    @NotNull(message = "password cannot be null")
     private String password;
 
+    @NotNull(message = "role cannot be null")
     @Enumerated(value = EnumType.STRING)
     private Role role;
 
+    @NotNull(message = "image cannot be null")
     @ManyToOne
     @JoinColumn(name = "image_id")
     private ImageEntity profilePicture;
