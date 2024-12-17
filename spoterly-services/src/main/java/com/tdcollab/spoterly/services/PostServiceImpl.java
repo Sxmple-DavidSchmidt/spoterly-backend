@@ -2,15 +2,15 @@ package com.tdcollab.spoterly.services;
 
 import com.tdcollab.spoterly.core.entities.PostEntity;
 import com.tdcollab.spoterly.core.entities.SpotEntity;
+import com.tdcollab.spoterly.core.entities.UserEntity;
 import com.tdcollab.spoterly.core.exceptions.PostNotFoundException;
+import com.tdcollab.spoterly.core.services.SpotService;
+import com.tdcollab.spoterly.core.services.UserService;
 import com.tdcollab.spoterly.repositories.PostRepository;
 import com.tdcollab.spoterly.core.services.PostService;
-import com.tdcollab.spoterly.core.exceptions.SpotNotFoundException;
-import com.tdcollab.spoterly.repositories.SpotRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -20,11 +20,13 @@ import java.util.stream.StreamSupport;
 @Service
 public class PostServiceImpl implements PostService {
     private final PostRepository postRepository;
-    private final SpotRepository spotRepository;
+    private final UserService userService;
+    private final SpotService spotService;
 
-    public PostServiceImpl(PostRepository postRepository, SpotRepository spotRepository) {
+    public PostServiceImpl(PostRepository postRepository, UserService userService, SpotService spotService) {
         this.postRepository = postRepository;
-        this.spotRepository = spotRepository;
+        this.userService = userService;
+        this.spotService = spotService;
     }
 
     @Override
@@ -52,9 +54,14 @@ public class PostServiceImpl implements PostService {
     @Override
     @Transactional
     public List<PostEntity> findBySpotId(UUID id) {
-        Optional<SpotEntity> spotEntity = spotRepository.findById(id);
-        if (spotEntity.isEmpty()) throw new SpotNotFoundException("Could not find Spot id \"" + id + "\"");
-        return new ArrayList<>(postRepository.findAllBySpotId(id));
+        SpotEntity spotEntity = spotService.findById(id);
+        return postRepository.findAllBySpotId(spotEntity.getId());
+    }
+
+    @Override
+    public List<PostEntity> findByUsername(String username) {
+        UserEntity userEntity = userService.findByUsername(username);
+        return postRepository.findAllByAuthorUsername(userEntity.getUsername());
     }
 
     @Override

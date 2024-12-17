@@ -10,5 +10,6 @@ public interface PostService {
     PostEntity findById(UUID id);
     List<PostEntity> findAll();
     List<PostEntity> findBySpotId(UUID id);
+    List<PostEntity> findByUsername(String username);
     void deletePost(UUID id);
 }
