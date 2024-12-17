@@ -29,7 +29,8 @@ public class SpotServiceImpl implements SpotService {
     @Override
     public SpotEntity findById(UUID id) {
         Optional<SpotEntity> spotEntity = spotRepository.findById(id);
-        if (spotEntity.isEmpty()) throw new SpotNotFoundException("Could not find Spot with id \"" + id + "\"");
+        if (spotEntity.isEmpty())
+            throw new SpotNotFoundException("Could not find spot with id \"" + id + "\"");
         return spotEntity.get();
     }
 
