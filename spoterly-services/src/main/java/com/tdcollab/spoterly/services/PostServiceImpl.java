@@ -61,6 +61,7 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
+    @Transactional
     public List<PostEntity> findByUsername(String username) {
         if (!userRepository.existsByUsername(username))
             throw new UserNotFoundException("Could not find User with username \"" + username + "\"");
@@ -68,6 +69,7 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
+    @Transactional
     public void deletePost(UUID id) {
         PostEntity postEntity = findById(id);
         postRepository.delete(postEntity);
