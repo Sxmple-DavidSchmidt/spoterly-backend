@@ -83,6 +83,15 @@ public class PostController {
                 .toList();
     }
 
+    @GetMapping("/spot/getPostsByUser/{username}")
+    public List<MinimalPostDto> getPostsByUser(@PathVariable("username") String username) {
+        List<PostEntity> postEntities = postService.findByUsername(username);
+        return postEntities
+                .stream()
+                .map(postMapper::minimalFromPostEntity)
+                .toList();
+    }
+
     @ExceptionHandler(UserNotFoundException.class)
     public ResponseEntity<String> handleUserNotFoundException(UserNotFoundException e) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
