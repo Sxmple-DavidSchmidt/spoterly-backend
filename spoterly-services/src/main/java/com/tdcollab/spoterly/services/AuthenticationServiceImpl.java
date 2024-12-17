@@ -1,6 +1,7 @@
 package com.tdcollab.spoterly.services;
 
 import com.tdcollab.spoterly.core.entities.UserEntity;
+import com.tdcollab.spoterly.core.exceptions.UsernameAlreadyTakenException;
 import com.tdcollab.spoterly.core.model.AuthenticationResponse;
 import com.tdcollab.spoterly.core.services.AuthenticationService;
 import com.tdcollab.spoterly.repositories.UserRepository;
@@ -24,6 +25,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     public AuthenticationResponse register(UserEntity request) {
+        if (userRepository.existsByUsername(request.getUsername()))
+            throw new UsernameAlreadyTakenException("Username \"" + request.getUsername() + "\" is already taken");
+
         UserEntity userEntity = new UserEntity();
         userEntity.setUsername(request.getUsername());
         userEntity.setFirstname(request.getFirstname());
