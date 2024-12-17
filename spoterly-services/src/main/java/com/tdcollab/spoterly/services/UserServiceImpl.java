@@ -33,7 +33,8 @@ public class UserServiceImpl implements UserService {
     @Transactional()
     public UserEntity findByUsername(String username) {
         Optional<UserEntity> userEntity = userRepository.findByUsername(username);
-        if (userEntity.isEmpty()) throw new UserNotFoundException("Could not find user with username: \"" + username + "\"");
+        if (userEntity.isEmpty())
+            throw new UserNotFoundException("Could not find user with username: \"" + username + "\"");
         return userEntity.get();
     }
 
