@@ -27,9 +27,9 @@ public class PostMapper {
         UUID spot_id = postEntity.getSpot().getId();
 
         minimalPostDto.setId(postEntity.getId());
-        minimalPostDto.setAuthor_id(author_id);
-        minimalPostDto.setSpot_id(spot_id);
-        minimalPostDto.setImage(postEntity.getImage().getId());
+        minimalPostDto.setAuthorId(author_id);
+        minimalPostDto.setSpotId(spot_id);
+        minimalPostDto.setImageId(postEntity.getImage().getId());
         minimalPostDto.setTitle(postEntity.getTitle());
         minimalPostDto.setContent(postEntity.getContent());
         return minimalPostDto;
@@ -37,7 +37,7 @@ public class PostMapper {
 
     public PostEntity entityFromCreatePostDto(CreatePostDto createPostDto) {
         SpotEntity spotEntity = spotService.findById(createPostDto.getSpot());
-        ImageEntity imageEntity = imageService.findById(createPostDto.getImage());
+        ImageEntity imageEntity = imageService.findById(createPostDto.getImageId());
 
         PostEntity postEntity = new PostEntity();
         postEntity.setSpot(spotEntity);

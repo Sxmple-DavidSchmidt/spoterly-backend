@@ -3,24 +3,18 @@ package com.tdcollab.spoterly.core.mappers;
 import com.tdcollab.spoterly.core.dtos.auth.LoginDto;
 import com.tdcollab.spoterly.core.dtos.auth.RegisterDto;
 import com.tdcollab.spoterly.core.dtos.user.MinimalUserDto;
-import com.tdcollab.spoterly.core.dtos.user.UserDto;
 import com.tdcollab.spoterly.core.entities.Role;
 import com.tdcollab.spoterly.core.entities.UserEntity;
 import org.springframework.stereotype.Component;
 
+import java.util.UUID;
+
 @Component
 public class UserMapper {
-    public UserDto fromUserEntity(UserEntity userEntity) {
-        UserDto userDto = new UserDto();
-        userDto.setUsername(userEntity.getUsername());
-        userDto.setFirstname(userEntity.getFirstname());
-        userDto.setLastname(userEntity.getLastname());
-        userDto.setPassword(userEntity.getPassword());
-        return userDto;
-    }
-
     public MinimalUserDto minimalFromUserEntity(UserEntity userEntity) {
+        UUID profilePictureId = userEntity.getProfilePicture() == null ? null : userEntity.getProfilePicture().getId();
         MinimalUserDto minimalUserDto = new MinimalUserDto();
+        minimalUserDto.setProfilePictureId(profilePictureId);
         minimalUserDto.setUsername(userEntity.getUsername());
         minimalUserDto.setFirstname(userEntity.getFirstname());
         minimalUserDto.setLastname(userEntity.getLastname());

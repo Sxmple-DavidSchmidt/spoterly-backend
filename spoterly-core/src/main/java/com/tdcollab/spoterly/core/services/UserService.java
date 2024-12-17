@@ -13,4 +13,5 @@ public interface UserService {
     void unlikeSpot(String username, UUID spotId);
     void deleteUser(String username);
     void setRole(String username, Role role);
+    void setProfilePicture(String username, UUID imageId);
 }
